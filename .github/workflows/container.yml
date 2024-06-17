@@ -41,7 +41,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
         with:
           token: ${{ secrets.BOT_PAT_TOKEN }}
 
@@ -104,7 +104,7 @@ jobs:
 
       - name: Build image
         id: publish
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
@@ -123,7 +123,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
         with:
           token: ${{ secrets.BOT_PAT_TOKEN }}
 
