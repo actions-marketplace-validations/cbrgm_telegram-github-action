@@ -41,15 +41,15 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           token: ${{ secrets.BOT_PAT_TOKEN }}
 
       - name: Setup golang
         id: golang
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
-          go-version: ^1.21
+          go-version-file: .go-version
 
       - name: Run generate
         id: generate
@@ -69,7 +69,7 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
         with:
           images: |
             ghcr.io/cbrgm/telegram-github-action
@@ -87,15 +87,15 @@ jobs:
 
       - name: Setup qemu
         id: qemu
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       - name: Setup buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
 
       - name: Ghcr login
         id: login3
-        uses: docker/login-action@v3
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         if: github.event_name != 'pull_request'
         with:
           registry: ghcr.io
@@ -104,7 +104,7 @@ jobs:
 
       - name: Build image
         id: publish
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
@@ -123,14 +123,14 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           token: ${{ secrets.BOT_PAT_TOKEN }}
 
       - name: Ghcr tags
         id: ghcrTags
         if: github.event_name != 'pull_request'
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
         with:
           images: ghcr.io/cbrgm/telegram-github-action
           tags: |
@@ -142,7 +142,7 @@ jobs:
       - name: Ghcr manifest
         id: ghcr
         if: github.event_name != 'pull_request'
-        uses: actionhippie/manifest@v1
+        uses: actionhippie/manifest@f1b9778cbe1f3af13fcb3ce7e5cf8b46ef7bfa1b # v1.7.0
         with:
           username: cbrgm
           password: ${{ secrets.BOT_PAT_TOKEN }}

@@ -1,7 +1,7 @@
 ---
 name: automerge
 
-on: pull_request_target
+on: pull_request
 
 permissions:
   contents: write
@@ -16,7 +16,7 @@ jobs:
 
       - name: Fetch metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v1
+        uses: dependabot/fetch-metadata@08eff52bf64351f401fb50d4972fa95b9f2c2d1b # v2.4.0
         with:
           github-token: ${{ secrets.BOT_PAT_TOKEN }}
 
@@ -32,4 +32,31 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_PAT_TOKEN }}
 
+  renovate:
+    runs-on: ubuntu-latest
+    if: github.actor == 'renovate[bot]'
+
+    steps:
+      - name: Approve request
+        id: approve
+        run: gh pr review --approve ${{ github.event.pull_request.html_url }}
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT_TOKEN }}
+
+      - name: Enable automerge
+        id: automerge
+        run: gh pr merge --rebase --auto ${{ github.event.pull_request.html_url }}
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT_TOKEN }}
+
+  cbrgm:
+    runs-on: ubuntu-latest
+    if: github.actor == 'cbrgm' && contains(github.event.pull_request.labels.*.name, 'auto-merge')
+
+    steps:
+      - name: Enable automerge
+        id: automerge
+        run: gh pr merge --rebase --auto ${{ github.event.pull_request.html_url }}
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT_TOKEN }}
 ...

@@ -9,6 +9,9 @@ inputs:
   to:
     description: 'Unique identifier for the target chat'
     required: true
+  thread-id:
+    description: "For supergroups. Thread identifier."
+    required: false
   message:
     description: 'The message to send'
     required: false
@@ -28,6 +31,10 @@ inputs:
     description: 'Protects the contents of the sent message from forwarding and saving'
     required: false
     default: "false"
+  dry-run:
+    description: 'If set, do not send a real message but print the details instead'
+    required: false
+    default: "false"
 
 runs:
   using: 'docker'
@@ -35,15 +42,17 @@ runs:
   args:
     - --token
     - ${{ inputs.token }}
-    - --to
-    - ${{ inputs.to }}
     - --message
     - ${{ inputs.message }}
     - --parse-mode
     - ${{ inputs.parse-mode }}
+    - --thread-id
+    - ${{ inputs.thread-id }}
+    - --to=${{ inputs.to }}
     - --disable-web-page-preview=${{ inputs.disable-web-page-preview }}
     - --disable-notification=${{ inputs.disable-notification }}
     - --protect-content=${{ inputs.protect-content }}
+    - --dry-run=${{ inputs.dry-run }}
 
 branding:
   icon: briefcase

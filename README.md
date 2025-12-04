@@ -12,11 +12,14 @@
 
 - `token`: **Required** - Telegram bot's authorization token. Use GitHub secrets.
 - `to`: **Required** - Unique identifier or username of the target Telegram chat.
+- `thread-id`: (Optional) Thread identifier in a Telegram supergroup.
+    - The message won’t be sent if `to` isn’t a supergroup and `thread-id` is set.
 - `message`: Optional - Text message to send. If omitted, bot's information is fetched.
 - `parse-mode`: Optional - Mode for parsing text entities (`markdown` or `html`).
 - `disable-web-page-preview`: Optional - Disables link previews.
 - `disable-notification`: Optional - Sends message silently.
 - `protect-content`: Optional - Protects message content from forwarding/saving.
+- `dry-run`: Optional - If set, do not send a real message but print the details instead.
 
 ### Workflow Usage
 
@@ -30,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Telegram Message
-        uses: cbrgm/telegram-github-action@v1.0
+        uses: cbrgm/telegram-github-action@v1
         with:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -56,7 +59,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Send Inline Telegram Message
-        uses: cbrgm/telegram-github-action@v1.0
+        uses: cbrgm/telegram-github-action@v1
         with:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -83,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Telegram Notification on New Release
-        uses: cbrgm/telegram-github-action@lv1.0
+        uses: cbrgm/telegram-github-action@v1
         with:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -110,6 +113,9 @@ curl https://api.telegram.org/bot<token>/getUpdates
 ```
 Replace <token> with your bot's token to find your `chat_id` (`TELEGRAM_CHAT_ID`).
 
+
+### Obtaining the Thread ID
+The easiest way to get the thread ID is as follows: Post a message in that thread, then right-click it and choose Copy Message Link. Paste it onto a scratchpad and you will notice that it has the following structure https://t.me/c/XXXXXXXXXX/YY/ZZ . The thread ID is YY (integer).
 ### Local Development
 
 You can build this action from source using `Go`:
@@ -120,8 +126,6 @@ make build
 
 ## Contributing & License
 
-We welcome and value your contributions to this project! 👍 If you're interested in making improvements or adding features, please refer to our [Contributing Guide](https://github.com/cbrgm/telegram-github-action/blob/main/CONTRIBUTING.md). This guide provides comprehensive instructions on how to submit changes, set up your development environment, and more.
-
-Please note that this project is developed in my spare time and is available for free 🕒💻. As an open-source initiative, it is governed by the [Apache 2.0 License](https://github.com/cbrgm/telegram-github-action/blob/main/LICENSE). This license outlines your rights and obligations when using, modifying, and distributing this software.
-
-Your involvement, whether it's through code contributions, suggestions, or feedback, is crucial for the ongoing improvement and success of this project. Together, we can ensure it remains a useful and well-maintained resource for everyone 🌍.
+* **Contributions Welcome!**: Interested in improving or adding features? Check our [Contributing Guide](https://github.com/cbrgm/telegram-github-action/blob/main/CONTRIBUTING.md) for instructions on submitting changes and setting up development environment.
+* **Open-Source & Free**: Developed in my spare time, available for free under [Apache 2.0 License](https://github.com/cbrgm/telegram-github-action/blob/main/LICENSE). License details your rights and obligations.
+* **Your Involvement Matters**: Code contributions, suggestions, feedback crucial for improvement and success. Let's maintain it as a useful resource for all 🌍.
