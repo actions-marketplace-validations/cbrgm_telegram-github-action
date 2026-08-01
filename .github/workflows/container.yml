@@ -41,13 +41,13 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           token: ${{ secrets.BOT_PAT_TOKEN }}
 
       - name: Setup golang
         id: golang
-        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: .go-version
 
@@ -69,7 +69,7 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: |
             ghcr.io/cbrgm/telegram-github-action
@@ -87,15 +87,15 @@ jobs:
 
       - name: Setup qemu
         id: qemu
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
 
       - name: Setup buildx
         id: buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
       - name: Ghcr login
         id: login3
-        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         if: github.event_name != 'pull_request'
         with:
           registry: ghcr.io
@@ -104,7 +104,7 @@ jobs:
 
       - name: Build image
         id: publish
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
@@ -123,14 +123,14 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           token: ${{ secrets.BOT_PAT_TOKEN }}
 
       - name: Ghcr tags
         id: ghcrTags
         if: github.event_name != 'pull_request'
-        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ghcr.io/cbrgm/telegram-github-action
           tags: |
@@ -142,7 +142,7 @@ jobs:
       - name: Ghcr manifest
         id: ghcr
         if: github.event_name != 'pull_request'
-        uses: actionhippie/manifest@bf97de23bfb02868fb55f0e83953ff57021e3e06 # v1.8.3
+        uses: actionhippie/manifest@91ad515d3d7d08e8236d7c008cfb8a9f6b8caf56 # v1.9.0
         with:
           username: cbrgm
           password: ${{ secrets.BOT_PAT_TOKEN }}
